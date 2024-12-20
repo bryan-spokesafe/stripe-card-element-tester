@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe('pk_test_f5JzvAJ8xJfDEzNGXt2akIkX');
+const stripePromise = loadStripe('pk_test_51QWcTUJC8IRfePhN5tEt2iQSti89RejICP6dW3xjNWNFqQZDddGA56L7L7D7t0hnViDzW7qhRMSTHyGPjfcFUUhF00sa2ww5M1');
 
 const CheckoutForm = () => {
     const stripe = useStripe();
@@ -12,14 +12,18 @@ const CheckoutForm = () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
   
-      const response = await fetch('http://localhost:4000/create-payment-intent', {
+      const response = await fetch('http://127.0.0.1:5001/pocketstorage-dev/europe-west2/stripe-createSubscription', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: 1000 }),
+          body: JSON.stringify({
+           "customerId": "cus_RPsxWNO0G4EmaG",
+           "priceId": "price_1QX5O9JC8IRfePhNtEXSlF2k"
+        }),
       });
-      const { clientSecret } = await response.json();
+      const sub_response = await response.json();
+      console.log(sub_response.data, 'SUBSCRIPTION DATA');
   
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      const { error, paymentIntent } = await stripe.confirmCardPayment(sub_response.data.latest_invoice.payment_intent.client_secret, {
           payment_method: {
               card: elements.getElement(CardElement),
           },
