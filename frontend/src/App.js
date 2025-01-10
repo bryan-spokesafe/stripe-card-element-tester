@@ -16,8 +16,17 @@ const CheckoutForm = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-           "customerId": "cus_RPsxWNO0G4EmaG",
-           "priceId": "price_1QX5O9JC8IRfePhNtEXSlF2k"
+            "user": {
+                "first_name": "Jared", "last_name": "Leto", "email": "jared@email.com", "phone_number": "39401202", "stripeCustomerId": "cus_RPsxWNO0G4EmaG"
+            },
+            "priceId": "price_1QXux0JC8IRfePhN2D3THPwl",    
+            "metadata": {
+                "storageId": "13212313",
+                "locationId": "chinatown",
+                "type": "monthly",
+                "price": "23",
+                "userId": "userIDTestTEstingNotyetregisterred"
+            }
         }),
       });
       const sub_response = await response.json();
